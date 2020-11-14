@@ -13,7 +13,7 @@ module.exports = {
     productionSourceMap: false,
     filenameHashing: false,
     devServer: {
-        host: 'dev.daydao.com',
+        host: 'zhangpeng.project',
         port: 9090,
         disableHostCheck:true,
         headers: {

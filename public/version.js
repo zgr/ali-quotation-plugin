@@ -7,7 +7,7 @@ var DaydaoVideoInterviewExtension = {
     },
 
     getDomain: function () {
-        return this.isDev() ? location.protocol + '//dev.daydao.com:9090' : 'https://static-ai.daydao.com';
+        return this.isDev() ? location.protocol + '//zhangpeng.project:9090' : 'https://static-ai.daydao.com';
     },
 
     getFilePath:function(){

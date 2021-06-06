@@ -2,9 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.config.productionTip = false
-
+// import testPanel from 'z-daydao-ui'
+Vue.use(ElementUI)/* .use(testPanel) */
 new Vue({
   router,
   store,

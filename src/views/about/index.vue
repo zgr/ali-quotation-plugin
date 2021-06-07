@@ -26,7 +26,7 @@
       </el-table>
       
     </div>
-    <edit v-if="isShowEdit" @on-close="isShowEdit = false"></edit>
+    <edit v-if="isShowEdit" @on-close="isShowEdit = false" @on-submit="afterSubmit"></edit>
   </div>
 
 </template>
@@ -63,6 +63,11 @@
           .catch((error) => {
             console.log(error);
           });
+      },
+
+      afterSubmit(){
+        this.isShowEdit = false;
+        this.getList()
       },
 
       deleteData(data){

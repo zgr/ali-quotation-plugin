@@ -97,7 +97,11 @@ export default {
             },
           }).then((res) => {
             if (res.data && res.data.code == 200) {
-              this.$message("新增成功!");
+              this.$message({
+                showClose: true,
+                message: "新增成功",
+                type: "success",
+              });
               this.$emit("on-submit");
             }
           });

@@ -72,6 +72,20 @@
 
       deleteData(data){
         console.log(data)
+        axios({
+            method: "post",
+            url: "/api/removeItem",
+            data: {uuid:data.uuid},
+          }).then((res) => {
+            if (res.data && res.data.code == 200) {
+              this.$message({
+                showClose: true,
+                message: "删除成功",
+                type: "success",
+              });
+              this.getList();
+            }
+          });
       },
       
       editData(type,data){

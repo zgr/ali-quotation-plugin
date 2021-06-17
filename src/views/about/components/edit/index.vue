@@ -1,7 +1,7 @@
 <template>
   <div :class="prefixCls">
     <el-dialog
-      title="新增"
+      :title="type == 0 ? '新增' : '编辑'"
       width="700px"
       :close-on-click-modal="false"
       append-to-body
@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">新增</el-button>
+          <el-button type="primary" @click="onSubmit">保存</el-button>
           <el-button @click="handlerCancel">取消</el-button>
         </el-form-item>
       </el-form>
@@ -36,7 +36,16 @@ import axios from "axios";
 export default {
   name: "",
   components: {},
-  props: {},
+  props: {
+    type: {
+      type:Number,
+      default: 0
+    },
+    data:{
+      default:null
+    }
+
+  },
   data() {
     return {
       prefixCls: "views-about-edit",
@@ -78,7 +87,15 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    if(this.type == 1){
+      this.form = {
+        name:this.data.name,
+        url: this.data.url,
+        type: this.data.type
+      }
+    }
+  },
   beforeDestroy() {},
   methods: {
     handlerCancel() {
@@ -87,14 +104,20 @@ export default {
     onSubmit() {
       this.$refs["form"].validate((valid) => {
         if (valid) {
-          axios({
-            method: "post",
-            url: "/api/insertItem",
-            data: {
+          let url = this.type == 0 ? '/api/insertItem' : '/api/updateItem';
+          let params = {
               name: this.form.name,
               url: this.form.url,
               type: this.form.type,
-            },
+            };
+            if(this.type == 1){
+              params.uuid = this.data.uuid;
+            }
+
+          axios({
+            method: "post",
+            url: url,
+            data: params,
           }).then((res) => {
             if (res.data && res.data.code == 200) {
               this.$message({

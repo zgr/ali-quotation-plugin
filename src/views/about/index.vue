@@ -33,6 +33,7 @@
 <script>
   import axios from 'axios'
   import Edit from './components/edit'
+  import {getItems} from '@/service'
   export default {
     nanme:"about",
     data() {
@@ -53,12 +54,9 @@
     methods: {
       getList() {
         // 发送 POST 请求
-        axios.get('/api/getItems', {
-            params: {
-              //type: "cn"
-            }
-          })
-          .then((res) => {
+        getItems({
+          
+        }).then((res) => {
             this.isLoading = false;
             this.tableData = res.data;
           })

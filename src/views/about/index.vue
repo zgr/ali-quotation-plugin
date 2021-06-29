@@ -8,7 +8,7 @@
         <el-table-column type="selection" width="60"></el-table-column>
         <!-- <el-table-column prop="iIndex" label="序号" width="60"></el-table-column> -->
         <el-table-column prop="name" label="名称" width="180"></el-table-column>
-        <el-table-column prop="url" label="地址" ></el-table-column>
+        <el-table-column prop="url" label="地址"></el-table-column>
         <!-- <el-table-column prop="_id" label="id" ></el-table-column> -->
         <el-table-column label="类型" width="180">
           <template slot-scope="scope">
@@ -24,28 +24,33 @@
           </template>
         </el-table-column>
       </el-table>
-      
+
     </div>
-    <edit v-if="isShowEdit" @on-close="isShowEdit = false" :type="editType" :data="currentData" @on-submit="afterSubmit"></edit>
+    <edit v-if="isShowEdit" @on-close="isShowEdit = false" :type="editType" :data="currentData"
+      @on-submit="afterSubmit"></edit>
   </div>
 
 </template>
 <script>
   import axios from 'axios'
   import Edit from './components/edit'
-  import {getItems} from '@/service'
+  import {
+    getItems,
+    removeItem,
+    updateItem
+  } from '@/service'
   export default {
-    nanme:"about",
+    nanme: "about",
     data() {
       return {
         prefixCls: 'views-about',
         isLoading: true,
         tableData: [],
-        isShowEdit:false,
-        currentData:null
+        isShowEdit: false,
+        currentData: null
       }
     },
-    components:{
+    components: {
       Edit
     },
     mounted() {
@@ -55,8 +60,8 @@
       getList() {
         // 发送 POST 请求
         getItems({
-          
-        }).then((res) => {
+
+          }).then((res) => {
             this.isLoading = false;
             this.tableData = res.data;
           })
@@ -65,30 +70,28 @@
           });
       },
 
-      afterSubmit(){
+      afterSubmit() {
         this.isShowEdit = false;
         this.getList()
       },
 
-      deleteData(data){
+      deleteData(data) {
         console.log(data)
-        axios({
-            method: "post",
-            url: "/api/removeItem",
-            data: {uuid:data.uuid},
-          }).then((res) => {
-            if (res.data && res.data.code == 200) {
-              this.$message({
-                showClose: true,
-                message: "删除成功",
-                type: "success",
-              });
-              this.getList();
-            }
-          });
+        removeItem({
+          uuid: data.uuid
+        }).then((res) => {
+          if (res.resCode == 200) {
+            this.$message({
+              showClose: true,
+              message: "删除成功",
+              type: "success",
+            });
+            this.getList();
+          }
+        });
       },
-      
-      editData(type,data){
+
+      editData(type, data) {
         this.isShowEdit = true;
         this.editType = type; //0 新增 1.修改
         this.currentData = data;
@@ -98,9 +101,11 @@
 </script>
 <style lang="scss" scoped>
   $prefixCls: "views-about";
-  .#{$prefixCls}{
+
+  .#{$prefixCls} {
     padding: 10px;
-    .btn-list{
+
+    .btn-list {
       margin: 10px 0;
       text-align: left;
     }
